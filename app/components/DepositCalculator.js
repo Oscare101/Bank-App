@@ -17,7 +17,9 @@ import {
   Feather,
   FontAwesome,
   FontAwesome5,
+  Foundation,
 } from '@expo/vector-icons'
+
 const width = Dimensions.get('window').width
 
 export default function DepositCalculator() {
@@ -244,8 +246,44 @@ export default function DepositCalculator() {
         <Text style={styles.headerTitle}>{percent}%</Text>
       </View>
 
-      <View>
-        <Text></Text>
+      <View style={styles.currency}>
+        <TouchableOpacity>
+          <View style={styles.currencyItem}>
+            <View style={styles.currencyIcon}>
+              <View style={styles.currencyBorder}>
+                <FontAwesome5 name="hryvnia" size={15} color="black" />
+              </View>
+            </View>
+
+            <Text style={styles.currencyText}>Гривня</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.line}></View>
+
+        <TouchableOpacity>
+          <View style={styles.currencyItem}>
+            <View style={styles.currencyIcon}>
+              <View style={styles.currencyBorder}>
+                <FontAwesome5 name="dollar-sign" size={15} color="black" />
+              </View>
+            </View>
+            <Text style={styles.currencyText}>Доллар</Text>
+          </View>
+        </TouchableOpacity>
+
+        <View style={styles.line}></View>
+
+        <TouchableOpacity>
+          <View style={styles.currencyItem}>
+            <View style={styles.currencyIcon}>
+              <View style={styles.currencyBorder}>
+                <FontAwesome5 name="euro-sign" size={15} color="black" />
+              </View>
+            </View>
+            <Text style={styles.currencyText}>Євро</Text>
+          </View>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.months}>
@@ -314,6 +352,13 @@ export default function DepositCalculator() {
           </Text>
         </View>
       </TouchableOpacity>
+      <View style={{ position: 'absolute', bottom: 10 }}>
+        <TouchableOpacity>
+          <View style={styles.offer}>
+            <Text style={styles.offerText}>Оформити депозит</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -332,6 +377,49 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 24,
     fontWeight: '700',
+  },
+  currency: {
+    flexDirection: 'row',
+    width: width * 0.93,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    elevation: 2,
+    backgroundColor: '#fff',
+
+    borderRadius: 15,
+    marginVertical: 15,
+    height: 110,
+  },
+  currencyItem: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
+    width: width * 0.3,
+  },
+  currencyText: {
+    fontWeight: '700',
+    fontSize: 16,
+  },
+  line: {
+    backgroundColor: '#ddd',
+    width: 1,
+    height: '70%',
+  },
+  currencyIcon: {
+    borderRadius: 100,
+    padding: 7,
+    paddingVertical: 12,
+    backgroundColor: '#fff',
+    elevation: 2,
+  },
+  currencyBorder: {
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: '#333',
+    paddingHorizontal: 8,
+    paddingVertical: 1,
   },
   months: {
     flexDirection: 'row',
@@ -417,122 +505,16 @@ const styles = StyleSheet.create({
   modal: {
     width: '100%',
   },
+  offer: {
+    backgroundColor: '#FF5757',
+    width: width * 0.93,
+    height: 60,
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  offerText: {
+    color: '#fff',
+    fontSize: 17,
+  },
 })
-
-// export default function DepositCalculator({ navigation }) {
-//   const [calculatorOutput, setCalculatorOutput] = useState()
-//   const [money, setMoney] = useState()
-//   const [months, setMonths] = useState()
-//   const [persent, setPersent] = useState()
-//   const [formula, setFormula] = useState()
-
-//   const Calculate = () => {
-//     setCalculatorOutput(formula)
-//   }
-
-//   return (
-//     <View style={styles.view}>
-//       <Text style={styles.headerTitle}>Калькулятор депозитов</Text>
-//       <View style={styles.inputBlock}>
-//         <Text style={styles.text}>
-//           Выберите куда пойдут накопленные средства
-//         </Text>
-//         <RNPickerSelect
-//           style={styles.picker}
-//           placeholder={{
-//             label: 'проценты накапливать на депозите',
-//             value: '1',
-//           }}
-//           onValueChange={(value) => {
-//             setFormula(value)
-//           }}
-//           items={[{ label: 'снимать на карту', value: '2' }]}
-//         />
-//       </View>
-
-//       <View style={styles.inputBlock}>
-//         <Text style={styles.text}>Введите начальную сумму</Text>
-//         <TextInput
-//           keyboardType="numeric"
-//           placeholder="Enter an amount of money"
-//           style={styles.input}
-//           onChangeText={setMoney}
-//           value={money}
-//         />
-//       </View>
-
-//       <View style={styles.inputBlock}>
-//         <Text style={styles.text}>Введите сроки депозита</Text>
-//         <RNPickerSelect
-//           style={styles.picker}
-//           placeholder={{
-//             label: '1 месяц',
-//             value: '1',
-//           }}
-//           onValueChange={(value) => {
-//             setMonths(value)
-//           }}
-//           items={[
-//             { label: '2 месяца', value: '2' },
-//             { label: '3 месяца', value: '3' },
-//             { label: '6 месяцев', value: '6' },
-//             { label: '12 месяцев', value: '12' },
-//             { label: '24 месяца', value: '24' },
-//           ]}
-//           value={months}
-//         />
-//       </View>
-//       <TouchableOpacity onPress={() => Calculate()}>
-//         <View style={styles.button}>
-//           <Text style={styles.buttonText}>Calculate</Text>
-//         </View>
-//       </TouchableOpacity>
-//       <Text>{calculatorOutput}</Text>
-//     </View>
-//   )
-// }
-
-// const styles = StyleSheet.create({
-//   view: {
-//     flex: 1,
-//     alignItems: 'center',
-//     justifyContent: 'flex-start',
-//     backgroundColor: '#707277',
-//   },
-//   headerTitle: {
-//     fontSize: 30,
-//   },
-//   input: {
-//     borderWidth: 1,
-//     borderColor: '#666',
-//     backgroundColor: '#4A4C54',
-//     padding: 1,
-//     borderRadius: 3,
-//     fontSize: 24,
-//   },
-//   picker: {},
-//   inputBlock: {
-//     width: width * 0.95,
-//     elevation: 10,
-//     backgroundColor: '#4A4C54',
-//     padding: 10,
-//     borderRadius: 5,
-//     margin: 5,
-//   },
-//   text: {
-//     fontSize: 20,
-//     color: '#aaa',
-//   },
-//   button: {
-//     backgroundColor: '#333439',
-//     width: width * 0.95,
-//     height: 40,
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     borderRadius: 5,
-//   },
-//   buttonText: {
-//     fontSize: 24,
-//     color: '#ccc',
-//   },
-// })
