@@ -311,7 +311,7 @@ export default function Deposit({ navigation }) {
         </View>
       </Modal>
 
-      <View style={{ position: 'absolute', top: 15, left: 20 }}>
+      <View style={{ position: 'absolute', top: 30, left: 20 }}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <View>
             <AntDesign name="arrowleft" size={30} color="red" />
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     backgroundColor: '#fff',
-    paddingTop: 10,
+    paddingTop: 30,
   },
   header: {
     alignItems: 'center',

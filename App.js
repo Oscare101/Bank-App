@@ -6,7 +6,11 @@ export default function App() {
   return (
     <>
       <BottomTab />
-      <StatusBar style="auto" backgroundColor="white" barStyle="dark-content" />
+      <StatusBar
+        translucent={true}
+        backgroundColor={'transparent'}
+        barStyle="dark-content"
+      />
     </>
   )
 }

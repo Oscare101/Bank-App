@@ -13,15 +13,18 @@ const Stack = createStackNavigator()
 function AccumulationScreen({ navigation }) {
   return (
     <View>
-      <View
+      <LinearGradient
+        colors={['#0962BC', '#3A97F7']}
+        start={[0, 1]}
+        end={[1, 0]}
         style={{
-          backgroundColor: '#1E79D6',
           width: width,
           height: height * 0.3,
           zIndex: 1,
           top: 0,
         }}
-      ></View>
+      ></LinearGradient>
+
       <View style={styles.view}>
         <View>
           <TouchableOpacity
