@@ -10,6 +10,8 @@ import {
   Switch,
   Linking,
   Modal,
+  ScrollView,
+  _ScrollView,
 } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select'
 import {
@@ -19,15 +21,17 @@ import {
   FontAwesome5,
   Foundation,
 } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
-export default function DepositCalculator() {
+export default function Deposit({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false) // модал
   const [blackPercent, setBlackPercent] = useState() // % если выводить на карту
   const [storagePercent, setStoragePercent] = useState() // % если накапливать на депозите
   const [percent, setPercent] = useState(10) // процент депозита
-
+  const [monthName, setMonthName] = useState(' місяців')
   const [months, setMonths] = useState(12) // срок депозита
   const [deposit, setDeposit] = useState('Додавати % до депозіту') // снимать или накапливать
   const [anticipatorily, setAnticipatorily] = useState(false) // ечть ли досрочное снятие
@@ -49,12 +53,26 @@ export default function DepositCalculator() {
     if (deposit == 'Додавати % до депозіту') {
       return (
         <View style={styles.percent}>
-          <View style={styles.iconPercent}>
-            <View style={styles.circle}>
-              <Feather name="percent" size={24} color="white" />
+          <LinearGradient
+            colors={['#F23414', '#FF6C06']}
+            start={[0, 0]}
+            end={[1, 1]}
+            style={{
+              width: 50,
+              height: 50,
+              borderRadius: 100,
+              overflow: 'hidden',
+              alignItems: 'center',
+            }}
+          >
+            <View style={styles.iconPercent}>
+              <View style={styles.circle}>
+                <Feather name="percent" size={24} color="white" />
+              </View>
             </View>
-          </View>
-          <View>
+          </LinearGradient>
+
+          <View style={{ marginLeft: 20 }}>
             <Text style={styles.title}>{deposit}</Text>
             <Text style={styles.grey}>Щомісяця</Text>
           </View>
@@ -77,7 +95,15 @@ export default function DepositCalculator() {
   const MinusMonth = () => {
     if (months > 1) {
       let a = months - 1
+
       setMonths(a)
+      if (a == 1) {
+        setMonthName(' місяць')
+      } else if (1 < a && a < 5) {
+        setMonthName(' місяці')
+      } else if (a > 4) {
+        setMonthName(' місяців')
+      }
       Percent(a)
     }
   }
@@ -86,6 +112,14 @@ export default function DepositCalculator() {
     if (months < 12) {
       let b = months + 1
       setMonths(b)
+      if (b == 1) {
+        setMonthName(' місяць')
+      } else if (1 < b && b < 5) {
+        setMonthName(' місяці')
+      } else if (b > 4) {
+        setMonthName(' місяців')
+      }
+
       Percent(b)
     }
   }
@@ -183,12 +217,24 @@ export default function DepositCalculator() {
     let p = (percent * 0.805).toFixed(2)
     setBlackPercent(p)
   }
-
   return (
     <View style={styles.view}>
-      <Modal animationType="slide" visible={modalVisible}>
+      <Modal animationType="slide" visible={modalVisible} transparent={true}>
         <View style={styles.modal}>
-          <View>
+          <View styl={styles.smalModal}>
+            <View
+              style={{
+                width: width,
+                borderColor: '#999',
+                borderWidth: 1,
+
+                height: 1000,
+                backgroundColor: '#f7f7f7',
+                position: 'absolute',
+                borderRadius: 20,
+                left: -15,
+              }}
+            ></View>
             <View style={{ padding: 10 }}>
               <Text style={styles.title}>
                 Як ви будете отримувати проценти?
@@ -203,13 +249,31 @@ export default function DepositCalculator() {
                 setDeposit('Додавати % до депозіту')
               }}
             >
-              <View style={[styles.percent, { elevation: 0 }]}>
-                <View style={styles.iconPercent}>
-                  <View style={styles.circle}>
-                    <Feather name="percent" size={24} color="white" />
+              <View
+                style={[
+                  styles.percent,
+                  { elevation: 0, marginBottom: 0, backgroundColor: '#f7f7f7' },
+                ]}
+              >
+                <LinearGradient
+                  colors={['#F23414', '#FF6C06']}
+                  start={[0, 0]}
+                  end={[1, 1]}
+                  style={{
+                    width: 50,
+                    height: 50,
+                    borderRadius: 100,
+                    overflow: 'hidden',
+                    alignItems: 'center',
+                  }}
+                >
+                  <View style={styles.iconPercent}>
+                    <View style={styles.circle}>
+                      <Feather name="percent" size={24} color="white" />
+                    </View>
                   </View>
-                </View>
-                <View>
+                </LinearGradient>
+                <View style={{ marginLeft: 20, paddingRight: 20 }}>
                   <Text style={styles.title}>Додавати % до депозіту</Text>
                   <Text style={styles.grey}>
                     Дохід після сплати податків становитиме {storagePercent}%
@@ -225,11 +289,16 @@ export default function DepositCalculator() {
                 setDeposit('На мою чорну картку')
               }}
             >
-              <View style={[styles.percent, { elevation: 0 }]}>
+              <View
+                style={[
+                  styles.percent,
+                  { elevation: 0, margin: 0, backgroundColor: '#f7f7f7' },
+                ]}
+              >
                 <View style={styles.iconCard}>
                   <FontAwesome name="cc-mastercard" size={24} color="white" />
                 </View>
-                <View>
+                <View style={{ paddingRight: 50 }}>
                   <Text style={styles.title}>На мою чорну картку</Text>
                   <Text style={styles.grey}>
                     Дохід після сплати податків становитиме {blackPercent}%
@@ -241,6 +310,14 @@ export default function DepositCalculator() {
           </View>
         </View>
       </Modal>
+
+      <View style={{ position: 'absolute', top: 15, left: 20 }}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <View>
+            <AntDesign name="arrowleft" size={30} color="red" />
+          </View>
+        </TouchableOpacity>
+      </View>
 
       <View style={styles.header}>
         <Text style={styles.headerTitle}>{percent}%</Text>
@@ -293,7 +370,10 @@ export default function DepositCalculator() {
           </View>
         </TouchableOpacity>
         <View style={{ flexDirection: 'column', alignItems: 'center' }}>
-          <Text style={styles.title}>{months}</Text>
+          <Text style={styles.title}>
+            {months}
+            {monthName}
+          </Text>
           <Text style={styles.grey}>Процентна ставка {percent}%</Text>
         </View>
         <TouchableOpacity onPress={() => PlusMonth()}>
@@ -315,10 +395,23 @@ export default function DepositCalculator() {
       <View
         style={months > 2 ? styles.period : [styles.period, { opacity: 0.8 }]}
       >
-        <View style={styles.iconMoney}>
+        <LinearGradient
+          colors={['#099E6B', '#00C27F']}
+          start={[0, 0]}
+          end={[1, 1]}
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: 100,
+            overflow: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
           <FontAwesome name="money" size={24} color="white" />
-        </View>
-        <View>
+        </LinearGradient>
+
+        <View style={{ marginLeft: 20 }}>
           <Text style={styles.title}>Дострокове розірвання</Text>
           <Text style={styles.grey}>Проценти будуть нижчи</Text>
         </View>
@@ -352,8 +445,9 @@ export default function DepositCalculator() {
           </Text>
         </View>
       </TouchableOpacity>
+
       <View style={{ position: 'absolute', bottom: 10 }}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => alert('поки ще ні')}>
           <View style={styles.offer}>
             <Text style={styles.offerText}>Оформити депозит</Text>
           </View>
@@ -452,19 +546,20 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   iconPercent: {
-    backgroundColor: '#F07930',
     borderRadius: 100,
-    padding: 8,
-    borderWidth: 1,
-    borderColor: '#fff',
-    marginRight: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   iconCard: {
     backgroundColor: '#000',
     borderRadius: 100,
-    paddingVertical: 10,
-    paddingHorizontal: 7,
+
     marginRight: 20,
+    width: 50,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   circle: {
     borderWidth: 1,
@@ -494,19 +589,27 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   iconMoney: {
-    backgroundColor: '#63D975',
     borderRadius: 100,
-    padding: 10,
     marginRight: 20,
   },
   switch: {
     marginLeft: 40,
   },
   modal: {
-    width: '100%',
+    flex: 1,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
+  smalModal: {
+    backgroundColor: '#fff',
+    elevation: 10,
+    borderRadius: 20,
+    width: width,
+    height: 200,
+    overflow: 'hidden',
   },
   offer: {
-    backgroundColor: '#FF5757',
+    backgroundColor: '#FB5255',
     width: width * 0.93,
     height: 60,
     borderRadius: 15,
